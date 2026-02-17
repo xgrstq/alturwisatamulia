@@ -1,15 +1,27 @@
 import { useState } from "react"
 import { packages } from "../data/packages"
+import PackageModal from "../components/PackageModal"
 
 export default function Experience() {
   const [activeType, setActiveType] = useState("Umroh")
+  const [openModal, setOpenModal] = useState(false)
+  const [selectedPackage, setSelectedPackage] = useState(null)
 
   const filteredPackages = packages.filter((p) => p.type === activeType)
+
+  const handleOpen = (pkg) => {
+    setSelectedPackage(pkg)
+    setOpenModal(true)
+  }
+
+  const handleClose = () => {
+    setOpenModal(false)
+    setSelectedPackage(null)
+  }
 
   return (
     <div className="pt-28 pb-20 px-6">
       <div className="max-w-6xl mx-auto">
-
         {/* HEADER */}
         <section>
           <p className="text-sm font-semibold text-[#C8A15A]">
@@ -20,14 +32,12 @@ export default function Experience() {
             Paket{" "}
             <span className="italic text-[#2F6F5E]">
               Umroh & Haji
-            </span>{" "}
-            Pilihan
+            </span>
           </h1>
 
           <p className="mt-5 text-lg text-[#6B6257] max-w-2xl leading-relaxed">
-            Pilih paket terbaik sesuai kebutuhan Anda. Setiap paket sudah
-            dilengkapi fasilitas utama seperti hotel strategis, konsumsi, dan
-            pembimbing ibadah.
+            Pilih paket sesuai kebutuhan Anda. Untuk detail fasilitas, hotel, dan
+            benefit lengkap, klik tombol detail paket.
           </p>
 
           {/* FILTER */}
@@ -57,68 +67,52 @@ export default function Experience() {
         </section>
 
         {/* PACKAGE LIST */}
-        <section className="mt-14 grid lg:grid-cols-2 gap-8">
+        <section className="mt-14 grid md:grid-cols-2 gap-8">
           {filteredPackages.map((item) => (
             <div
               key={item.id}
               className="bg-white border border-[#E7D9C8] rounded-[2.5rem] shadow-sm hover:shadow-md transition overflow-hidden"
             >
-              {/* TOP */}
               <div className="p-8">
                 <div className="flex items-start justify-between gap-6">
                   <div>
-                    <p className="text-sm font-semibold text-[#C8A15A]">
+                    <p className="text-xs font-semibold text-[#C8A15A] uppercase tracking-wide">
                       {item.type}
                     </p>
 
-                    <h2 className="mt-2 text-2xl font-extrabold text-[#2E2A24]">
+                    <h2 className="mt-2 text-2xl font-extrabold text-[#2E2A24] leading-snug">
                       {item.name}
                     </h2>
 
-                    <p className="mt-2 text-sm text-[#6B6257]">
-                      Durasi: <span className="font-semibold">{item.duration}</span>
+                    <p className="mt-3 text-sm text-[#6B6257]">
+                      Durasi:{" "}
+                      <span className="font-semibold">{item.duration}</span>
+                    </p>
+
+                    <p className="mt-1 text-sm text-[#6B6257]">
+                      Keberangkatan:{" "}
+                      <span className="font-semibold">{item.departureDate}</span>
                     </p>
                   </div>
 
                   <div className="text-right">
-                    <p className="text-sm text-[#6B6257]">Mulai dari</p>
+                    <p className="text-xs text-[#6B6257]">
+                      Mulai dari
+                    </p>
                     <p className="text-2xl font-extrabold text-[#2F6F5E]">
                       {item.price}
                     </p>
                   </div>
                 </div>
 
-                {/* DETAILS */}
-                <div className="mt-6 grid sm:grid-cols-2 gap-4 text-sm">
-                  <div className="bg-[#FFFDF9] border border-[#E7D9C8] rounded-2xl p-4">
-                    <p className="font-bold text-[#2E2A24]">✈️ Maskapai</p>
-                    <p className="mt-1 text-[#6B6257]">{item.airline}</p>
-                  </div>
+                {/* quick highlights */}
+                <div className="mt-6 bg-[#FFFDF9] border border-[#E7D9C8] rounded-2xl p-5">
+                  <p className="font-bold text-[#2E2A24] text-sm">
+                    Highlight Fasilitas
+                  </p>
 
-                  <div className="bg-[#FFFDF9] border border-[#E7D9C8] rounded-2xl p-4">
-                    <p className="font-bold text-[#2E2A24]">📅 Keberangkatan</p>
-                    <p className="mt-1 text-[#6B6257]">{item.departureDate}</p>
-                  </div>
-
-                  <div className="bg-[#FFFDF9] border border-[#E7D9C8] rounded-2xl p-4">
-                    <p className="font-bold text-[#2E2A24]">🏨 Hotel Makkah</p>
-                    <p className="mt-1 text-[#6B6257]">{item.hotelMakkah}</p>
-                  </div>
-
-                  <div className="bg-[#FFFDF9] border border-[#E7D9C8] rounded-2xl p-4">
-                    <p className="font-bold text-[#2E2A24]">🏨 Hotel Madinah</p>
-                    <p className="mt-1 text-[#6B6257]">{item.hotelMadinah}</p>
-                  </div>
-                </div>
-
-                {/* BENEFITS */}
-                <div className="mt-7">
-                  <h3 className="font-extrabold text-[#2E2A24] text-lg">
-                    Benefit Paket
-                  </h3>
-
-                  <ul className="mt-4 grid sm:grid-cols-2 gap-3 text-sm text-[#6B6257]">
-                    {item.benefits.map((b, idx) => (
+                  <ul className="mt-3 grid gap-2 text-sm text-[#6B6257]">
+                    {item.benefits.slice(0, 4).map((b, idx) => (
                       <li key={idx} className="flex items-start gap-2">
                         <span className="text-[#2F6F5E] font-extrabold">✓</span>
                         <span>{b}</span>
@@ -127,14 +121,19 @@ export default function Experience() {
                   </ul>
                 </div>
 
-                {/* BUTTONS */}
-                <div className="mt-10 flex flex-wrap gap-3">
-                  <button className="px-6 py-3 rounded-full bg-[#F4EBDD] border border-[#E7D9C8] font-semibold text-[#2E2A24] hover:border-[#2F6F5E] transition">
+                {/* buttons */}
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <button
+                    onClick={() => handleOpen(item)}
+                    className="px-6 py-3 rounded-full bg-[#F4EBDD] border border-[#E7D9C8] font-semibold text-[#2E2A24] hover:border-[#2F6F5E] transition"
+                  >
                     Detail Paket
                   </button>
 
                   <a
-                    href="https://wa.me/6280000000000"
+                    href={`https://wa.me/6280000000000?text=Halo%20PT%20Altur%20Wisata%20Mulia,%20saya%20ingin%20daftar%20${encodeURIComponent(
+                      item.name
+                    )}`}
                     target="_blank"
                     className="px-6 py-3 rounded-full bg-[#2F6F5E] text-white font-semibold hover:bg-[#255a4c] transition"
                   >
@@ -156,7 +155,7 @@ export default function Experience() {
                 </h2>
                 <p className="mt-3 text-white/75 max-w-xl">
                   Anda bisa request tanggal keberangkatan, pilihan hotel, atau
-                  layanan tambahan. Tim kami akan membantu menyusun itinerary terbaik.
+                  layanan tambahan sesuai kebutuhan.
                 </p>
               </div>
 
@@ -170,8 +169,10 @@ export default function Experience() {
             </div>
           </div>
         </section>
-
       </div>
+
+      {/* MODAL */}
+      <PackageModal open={openModal} onClose={handleClose} data={selectedPackage} />
     </div>
   )
 }

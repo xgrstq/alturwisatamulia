@@ -18,7 +18,7 @@ export default function Home() {
               <span className="italic text-[#2F6F5E] font-extrabold">
                 Haji & Umroh
               </span>{" "}
-              Anda dengan Pelayanan Premium.
+              Anda dengan Pelayanan Sepenuh Hati.
             </h1>
 
             <p className="mt-5 text-lg text-[#6B6257] leading-relaxed max-w-xl">
