@@ -9,11 +9,15 @@ export default function Home() {
         <section className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <p className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#F4EBDD] border border-[#E7D9C8] text-sm font-semibold text-[#2E2A24]">
-              <span className="w-2 h-2 rounded-full bg-[#2F6F5E]" />
-              Resmi • Aman • Terpercaya
-            </p>
-
-            <h1 className="mt-5 text-4xl sm:text-5xl font-extrabold leading-tight text-[#2E2A24]">
+            <span className="w-2 h-2 rounded-full bg-[#2F6F5E]" />
+              <span>Resmi</span>
+               <span className="text-[#2F6F5E] font-extrabold">•</span>
+              <span>Aman</span>
+            <span className="text-[#2F6F5E] font-extrabold">•</span>
+             <span>Terpercaya</span>
+              </p>
+ 
+               <h1 className="mt-5 text-4xl sm:text-5xl font-extrabold leading-tight text-[#2E2A24]">
               Temani Perjalanan{" "}
               <span className="italic text-[#2F6F5E] font-extrabold">
                 Haji & Umroh
